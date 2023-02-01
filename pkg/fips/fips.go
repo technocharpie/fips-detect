@@ -58,7 +58,7 @@ func isHostRunningInFips() *SystemReport {
 }
 
 func findCryptoLibsInDir(dir string) []string {
-	fmt.Println("Current dir: ")
+	fmt.Println("Current dir: " + dir)
 	dirInfo, err := os.Stat(dir)
 	if err != nil || dirInfo.Mode()&os.ModeSymlink != 0 {
 		return []string{}
