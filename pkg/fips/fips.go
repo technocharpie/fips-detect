@@ -78,6 +78,8 @@ func findCryptoLibsInDir(dir string) []string {
 			}
 		}
 	}
+	fmt.Println("The crypto libs that were found in " + dir + " are:")
+	fmt.Println(libs)
 	return libs
 }
 
@@ -104,6 +106,8 @@ func isCryptoLibFips() *SystemReport {
 		libsErr = fmt.Errorf("no crypto libraries have been found %w", err)
 	}
 
+	FIPSCapable := false;
+
 	for i := range cryptoLibs {
 		lib, err := dlopen.GetHandle([]string{cryptoLibs[i]})
 		if err != nil {
@@ -115,8 +119,17 @@ func isCryptoLibFips() *SystemReport {
 		_, err = lib.GetSymbolPointer("FIPS_mode")
 		if err != nil {
 			libsErr = fmt.Errorf("%s is not FIPS-capable %w", cryptoLibs[i], err)
+			fmt.Print("This lib NOT(!) FIPS capable: ")
+			fmt.Println(i)
 			continue
 		}
+
+		fmt.Print("This lib is FIPS capable: ")
+		fmt.Println(i)
+
+		FIPSCapable = true
+	}
+	if FIPSCapable {
 		return &SystemReport{
 			Value: true,
 			Err:   nil,
