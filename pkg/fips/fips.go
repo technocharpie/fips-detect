@@ -74,6 +74,7 @@ func findCryptoLibsInDir(dir string) []string {
 	for i := range entries {
 		if !entries[i].IsDir() && entries[i].Type().IsRegular() {
 			if validLibName.MatchString(entries[i].Name()) {
+				fmt.Println("Valid lib: " + entries[i].Name())
 				libs = append(libs, entries[i].Name())
 			}
 		}
@@ -120,12 +121,12 @@ func isCryptoLibFips() *SystemReport {
 		if err != nil {
 			libsErr = fmt.Errorf("%s is not FIPS-capable %w", cryptoLibs[i], err)
 			fmt.Print("This lib NOT(!) FIPS capable: ")
-			fmt.Println(i)
+			fmt.Println(cryptoLibs[i])
 			continue
 		}
 
 		fmt.Print("This lib is FIPS capable: ")
-		fmt.Println(i)
+		fmt.Println(cryptoLibs[i])
 
 		FIPSCapable = true
 	}
