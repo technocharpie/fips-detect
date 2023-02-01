@@ -58,6 +58,7 @@ func isHostRunningInFips() *SystemReport {
 }
 
 func findCryptoLibsInDir(dir string) []string {
+	fmt.Println("Current dir: ")
 	dirInfo, err := os.Stat(dir)
 	if err != nil || dirInfo.Mode()&os.ModeSymlink != 0 {
 		return []string{}
@@ -73,6 +74,7 @@ func findCryptoLibsInDir(dir string) []string {
 
 	for i := range entries {
 		if !entries[i].IsDir() && entries[i].Type().IsRegular() {
+			fmt.Println("Checking lib: " + entries[i].Name())
 			if validLibName.MatchString(entries[i].Name()) {
 				fmt.Println("Valid lib: " + entries[i].Name())
 				libs = append(libs, entries[i].Name())
